@@ -1,0 +1,8 @@
+#!/bin/bash
+while read local_ref local_sha remote_ref remote_sha; do #lee las referencias del git push
+    if [[ "$remote_ref" == "refs/heads/main" ]]; then #no permitara hacer push a main
+        echo "No se permite hacer push directo a 'main'"
+        echo "Por favor usar una rama feature/ o hotfix/ y crea un Pull Request"
+        exit 1
+    fi
+done

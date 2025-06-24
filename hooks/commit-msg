@@ -1,0 +1,10 @@
+#!/bin/bash
+MSG_FILE=$1
+PATTERN='^(feat|fix|docs|style|refactor|perf|test|chore)(\([a-z0-9\-]+\))?:(\s).{1,90}$' #patron que sigue la convencion de commits
+
+if ! grep -Pq "$PATTERN" "$MSG_FILE"; then #verifica si el mensaje del commit sigue el patron
+    echo "Formato invalido:"
+    echo "$MSG_FILE"
+    echo "Usar este formato: tipo(scope): mensaje (maximo 90 caracteres)"
+    exit 1
+fi

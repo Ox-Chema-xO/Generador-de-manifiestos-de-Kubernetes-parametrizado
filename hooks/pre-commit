@@ -1,0 +1,44 @@
+#!/bin/bash
+echo "Ejecutando validaciones pre-commit..."
+
+# Validamos sintaxis YAML de plantillas
+echo "Validando sintaxis YAML de plantillas..."
+for file in templates/*.template; do
+    if [ -f "$file" ]; then
+        python3 -c "
+import yaml
+import sys
+try:
+    with open('$file', 'r') as f:
+        content = f.read()
+    # Reemplazamos '{{' y '}}' temporalmente con ' ' para validacion
+    content = content.replace('{{', ' ').replace('}}', ' ')
+    yaml.safe_load(content)
+    print('- Template $file con sintaxis YAML valido')
+except Exception as e:
+    print('- Template $file con sintaxis YAML invalido. Error:', e)
+    sys.exit(1)
+"
+    fi
+done
+
+# Validams sintaxis YAML del archivo de valores values.yaml
+echo "Validando sintaxis YAML de valores..."
+for file in templates/values.yaml; do
+    if [ -f "$file" ]; then
+        python3 -c "
+import yaml
+import sys
+try:
+    with open('$file', 'r') as f:
+        yaml.safe_load(f)
+    print('- Archivo de valores de configuracion $file con sintaxis YAML valido')
+except Exception as e:
+    print('- Archivo de valores de configuracion $file con sintaxis YAML invalido. Error:', e)
+    sys.exit(1)
+"
+    fi
+done
+
+echo "Validaciones pre-commit completadas exitosamente"
+exit 0

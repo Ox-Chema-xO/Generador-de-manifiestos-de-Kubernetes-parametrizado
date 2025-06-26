@@ -1,4 +1,5 @@
 app_name: "my-app"
+protocol: "TCP"
 image: "nginx:latest"
 replicas: 3
 container_port: 80

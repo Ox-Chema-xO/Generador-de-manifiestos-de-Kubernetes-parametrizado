@@ -6,7 +6,7 @@ metadata:
     app: {{app_name}}
 spec:
   ports:
-  - protocol: TCP
+  - protocol: {{protocol}}
     port: {{service_port}}
     targetPort: {{container_port}}
   selector:

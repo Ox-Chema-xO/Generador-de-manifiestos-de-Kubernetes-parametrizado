@@ -77,6 +77,7 @@ Generador-de-manifiestos-de-Kubernetes-parametrizado/
 │
 ├── hooks/
 │   ├── commit-msg
+│   ├── pre-commit
 │   └── pre-push
 │
 ├── src/
@@ -183,3 +184,8 @@ Y el historial de commits durante todo el desarrollo del sprint 1 fue el siguien
    </div>
 
 Durante el desarrollo del Sprint 1 cada desarrollador trabajo cada issue asignada en ramas diferentes en paralelo, al terminar todas las issues y tener todo los cambios en la rama develop, nace otra rama release desde develop en donde se agrega la documentacion correspondiente al sprint 1, asi aplicando correctamente las politicas de Git Flow
+
+## Videos
+Se referencia el link de los video de cada cada Sprint hecho:
+
+- **Sprint 1**: [link_video_script1](https://unipe-my.sharepoint.com/:v:/g/personal/guido_chipana_c_uni_pe/Ee90swFctiRJolXvJaV-kG0BqBnW4DzHIRHrsNBbQiJl8Q?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXciLCJyZWZlcnJhbFZpZXciOiJNeUZpbGVzTGlua0NvcHkifX0&e=bLpz5y)

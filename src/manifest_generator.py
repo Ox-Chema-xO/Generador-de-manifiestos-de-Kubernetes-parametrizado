@@ -88,10 +88,10 @@ def validar_manifiesto_k8s(contenido_manifiesto, nombre_archivo=""):
         # Limpiar archivo temporal
         os.unlink(temp_file)
         if resultado.returncode == 0:
-            print(f"✅ Manifiesto {nombre_archivo} válido")
+            print(f"Manifiesto {nombre_archivo} válido")
             return True
         else:
-            print(f"❌ Error en manifiesto {nombre_archivo}:")
+            print(f"Error en manifiesto {nombre_archivo}:")
             print(resultado.stderr)
             return False
     except FileNotFoundError:
@@ -128,15 +128,21 @@ def main():
     contenido_template = cargar_template(args.template)
     if not contenido_template:
         return 1
+    print(f"{'='*50}")
     manifiesto = generar_manifiesto(contenido_template, values)
     if not manifiesto:
         return 1
-    print("\nManifiesto generado:")
-    print("-" * 30)
+    print(f"{'*'*6} Manifiesto generado {'*'*6}")
     print(manifiesto)
+    # Validar manifiesto antes de mostrar o guardar
+    nombre_template = os.path.basename(args.template)
+    if not validar_manifiesto_k8s(manifiesto, nombre_template):
+        print("\nEl manifiesto generado NO es válido para Kubernetes. No se guardará el archivo.")
+        return 1
     # Guardar en archivo solo si se especifica el output
     if args.output:
         guardar_manifiesto(manifiesto, args.output)
+    print(f"{'='*50}")
     return 0
 
 

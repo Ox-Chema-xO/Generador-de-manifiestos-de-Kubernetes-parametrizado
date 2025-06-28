@@ -5,9 +5,39 @@ Generador de manifiestos k8s a partir de templates y values
 import yaml
 import argparse
 import os
+import jsonschema
 import subprocess
 import tempfile
 from jinja2 import Template
+
+
+esquema = {
+    "type": "object",
+    "properties": {
+        "app_name": {"type": "string"},
+        "protocol": {"type": "string"},
+        "image": {"type": "string",
+                  "pattern": "^[a-zA-Z0-9/_-]+(:[a-zA-Z0-9_.-]+)?$"
+                  },
+        "replicas": {"type": "integer", "minimum": 1},
+        "container_port": {"type": "integer", "minimum": 1, "maximum": 65535},
+        "service_port": {"type": "integer", "minimum": 1, "maximum": 65535}
+    },
+    "required": ["app_name", "protocol", "image",
+                 "replicas", "container_port", "service_port"]
+}
+
+
+def validar_values(values):
+    """
+    Se valida que los values cumplan el esquema
+    """
+    try:
+        jsonschema.validate(values, esquema)
+        return True
+    except jsonschema.ValidationError as e:
+        print(f"Error de validacion: {e.message}")
+        return False
 
 
 def cargar_values(ruta_values):
@@ -129,6 +159,8 @@ def main():
 
     values = cargar_values(args.values)
     if not values:
+        return 1
+    if not validar_values(values):
         return 1
     contenido_template = cargar_template(args.template)
     if not contenido_template:

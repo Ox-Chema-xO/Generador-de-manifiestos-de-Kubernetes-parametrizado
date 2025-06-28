@@ -74,16 +74,21 @@ def validar_manifiesto_k8s(contenido_manifiesto, nombre_archivo=""):
     """
     Valida manifiesto usando kubectl dry-run
     """
-    import tempfile
-    import subprocess
     try:
         # Crear archivo temporal con el manifiesto
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.yaml', delete=False) as f:
+        with tempfile.NamedTemporaryFile(
+            mode='w', suffix='.yaml', delete=False
+        ) as f:
             f.write(contenido_manifiesto)
             temp_file = f.name
         # Ejecutar kubectl dry-run --validate
         resultado = subprocess.run([
-            'kubectl', 'apply', '--dry-run=client', '--validate=true', '-f', temp_file
+            'kubectl',
+            'apply',
+            '--dry-run=client',
+            '--validate=true',
+            '-f',
+            temp_file
         ], capture_output=True, text=True)
         # Limpiar archivo temporal
         os.unlink(temp_file)
@@ -137,7 +142,10 @@ def main():
     # Validar manifiesto antes de mostrar o guardar
     nombre_template = os.path.basename(args.template)
     if not validar_manifiesto_k8s(manifiesto, nombre_template):
-        print("\nEl manifiesto generado NO es válido para Kubernetes. No se guardará el archivo.")
+        print(
+            "\nEl manifiesto generado NO es válido para Kubernetes. "
+            "No se guardará el archivo."
+        )
         return 1
     # Guardar en archivo solo si se especifica el output
     if args.output:

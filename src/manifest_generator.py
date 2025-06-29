@@ -184,7 +184,9 @@ def main():
             return 1
         # Guardar en archivo solo si se especifica el output
         if args.output:
-            guardar_manifiesto(manifiesto, args.output)
+            nombre_archivo = os.path.splitext(os.path.basename(template_path))[0]
+            ruta_output = os.path.join(args.output, nombre_archivo)
+            guardar_manifiesto(manifiesto, ruta_output)
         print(f"{'='*50}")
     return 0
 

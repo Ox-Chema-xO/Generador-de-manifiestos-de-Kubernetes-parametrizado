@@ -142,7 +142,8 @@ def main():
         description="Generador de manifiestos de kubernetes"
     )
     parser.add_argument(
-        '--template', '-t',
+        '--templates', '-t',
+        nargs='+',
         required=True,
         help='Ruta al archivo de template (.template)'
     )
@@ -162,27 +163,33 @@ def main():
         return 1
     if not validar_values(values):
         return 1
-    contenido_template = cargar_template(args.template)
-    if not contenido_template:
-        return 1
-    print(f"{'='*50}")
-    manifiesto = generar_manifiesto(contenido_template, values)
-    if not manifiesto:
-        return 1
-    print(f"{'*'*6} Manifiesto generado {'*'*6}")
-    print(manifiesto)
-    # Validar manifiesto antes de mostrar o guardar
-    nombre_template = os.path.basename(args.template)
-    if not validar_manifiesto_k8s(manifiesto, nombre_template):
-        print(
-            "\nEl manifiesto generado NO es válido para Kubernetes. "
-            "No se guardará el archivo."
-        )
-        return 1
-    # Guardar en archivo solo si se especifica el output
-    if args.output:
-        guardar_manifiesto(manifiesto, args.output)
-    print(f"{'='*50}")
+    for template_path in args.templates:
+        contenido_template = cargar_template(template_path)
+        if not contenido_template:
+            return 1
+        print(f"{'='*50}")
+        manifiesto = generar_manifiesto(contenido_template, values)
+        if not manifiesto:
+            return 1
+        print(f"\n{'*'*6} Manifiesto generado:")
+        print(f"{os.path.basename(template_path)} {'*'*6}")
+        print(manifiesto)
+
+        # Validar manifiesto antes de mostrar o guardar
+        nombre_template = os.path.basename(template_path)
+        if not validar_manifiesto_k8s(manifiesto, nombre_template):
+            print(
+                "\nEl manifiesto generado NO es válido para Kubernetes. "
+                "No se guardará el archivo."
+            )
+            return 1
+        # Guardar en archivo solo si se especifica el output
+        if args.output:
+            nombre_base = os.path.basename(template_path)
+            nombre_archivo = os.path.splitext(nombre_base)[0]
+            ruta_output = os.path.join(args.output, nombre_archivo)
+            guardar_manifiesto(manifiesto, ruta_output)
+        print(f"{'='*50}")
     return 0
 
 

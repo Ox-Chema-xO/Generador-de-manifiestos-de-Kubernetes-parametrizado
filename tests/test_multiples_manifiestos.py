@@ -52,7 +52,10 @@ def test_generar_deployment_manifiesto():
     """
     Test que se genere correctamente un manifiesto de deployment
     """
-    resultado = manifest_generator.generar_manifiesto(deployment_template, values)
+    resultado = manifest_generator.generar_manifiesto(
+        deployment_template,
+        values
+    )
 
     assert resultado is not None
     assert "test-app-deployment" in resultado
@@ -65,7 +68,10 @@ def test_generar_service_manifiesto():
     """
     Test que se genere correctamente un manifiesto de service
     """
-    resultado = manifest_generator.generar_manifiesto(service_template, values)
+    resultado = manifest_generator.generar_manifiesto(
+        service_template,
+        values
+    )
 
     assert resultado is not None
     assert "test-app-service" in resultado
@@ -79,8 +85,14 @@ def test_generar_multiples_manifiestos_mismo_values():
     Test generar multiples manifiestos con los mismos values
     """
     # Generar ambos manifiestos
-    deployment = manifest_generator.generar_manifiesto(deployment_template, values)
-    service = manifest_generator.generar_manifiesto(service_template, values)
+    deployment = manifest_generator.generar_manifiesto(
+        deployment_template,
+        values
+    )
+    service = manifest_generator.generar_manifiesto(
+        service_template,
+        values
+    )
 
     # Verificar que ambos se generaron
     assert deployment is not None
@@ -118,7 +130,7 @@ def test_template_inexistente():
     """
     Test manejo de archivo template que no existe
     """
-    resultado = manifest_generator.cargar_template('/archivo/que/no/existe.template')
+    resultado = manifest_generator.cargar_template('no_existe.template')
     assert resultado is None
 
 
@@ -126,5 +138,5 @@ def test_values_inexistente():
     """
     Test manejo de archivo values que no existe
     """
-    resultado = manifest_generator.cargar_values('/archivo/que/no/existe.yaml')
+    resultado = manifest_generator.cargar_values('no_existe.yaml')
     assert resultado is None

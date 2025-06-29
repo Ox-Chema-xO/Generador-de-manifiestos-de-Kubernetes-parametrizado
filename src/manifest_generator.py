@@ -171,7 +171,8 @@ def main():
         manifiesto = generar_manifiesto(contenido_template, values)
         if not manifiesto:
             return 1
-        print(f"\n{'*'*6} Manifiesto generado: {os.path.basename(template_path)} {'*'*6}")
+        print(f"\n{'*'*6} Manifiesto generado:")
+        print(f"{os.path.basename(template_path)} {'*'*6}")
         print(manifiesto)
 
         # Validar manifiesto antes de mostrar o guardar
@@ -184,7 +185,8 @@ def main():
             return 1
         # Guardar en archivo solo si se especifica el output
         if args.output:
-            nombre_archivo = os.path.splitext(os.path.basename(template_path))[0]
+            nombre_base = os.path.basename(template_path)
+            nombre_archivo = os.path.splitext(nombre_base)[0]
             ruta_output = os.path.join(args.output, nombre_archivo)
             guardar_manifiesto(manifiesto, ruta_output)
         print(f"{'='*50}")

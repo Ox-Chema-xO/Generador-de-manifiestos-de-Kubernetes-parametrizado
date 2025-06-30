@@ -73,3 +73,59 @@ class TestE2EManifestGenerator:
                 pytest.fail(f"Service no accesible: {e}")
 
 
+    def test_e2e_usuario_redespliega_app_actualizada(self):
+        """E2E: Usuario ejecuta generador, actualiza configuración y redespliega"""
+        # Despliegue inicial
+        subprocess.run([
+            'python', 'src/manifest_generator.py',
+            '-t', 'templates/deployment.yaml.template', 'templates/service.yaml.template',
+            '-v', 'templates/values.yaml',
+            '-o', 'test-output',
+            '--deploy'
+        ], capture_output=True)
+        # Esperar despliegue inicial
+        time.sleep(10)  
+        
+        # Modificar valores de configuración
+        with open('templates/values.yaml', 'r') as f:
+            values = yaml.safe_load(f)
+        
+        # Cambiar número de réplicas
+        original_replicas = values['replicas']
+        values['replicas'] = original_replicas + 1
+        
+        # Guardar configuración temporal
+        with open('test-values-updated.yaml', 'w') as f:
+            yaml.dump(values, f)
+        
+        # Redespliegue con nueva configuración
+        result = subprocess.run([
+            'python', 'src/manifest_generator.py',
+            '-t', 'templates/deployment.yaml.template', 'templates/service.yaml.template',
+            '-v', 'test-values-updated.yaml',
+            '-o', 'test-output',
+            '--deploy'
+        ], capture_output=True, text=True)
+        
+        assert result.returncode == 0, f"Redespliegue falló: {result.stderr}"
+
+        # Esperar actualización
+        time.sleep(15)  
+        
+        app_name = values['app_name']
+        result = subprocess.run([
+            'kubectl', 'get', 'deployment', f'{app_name}-deployment',
+            '-o', 'jsonpath={.spec.replicas}'
+        ], capture_output=True, text=True)
+        
+        actual_replicas = int(result.stdout.strip())
+        assert actual_replicas == values['replicas'], f"Réplicas no actualizadas: esperado {values['replicas']}, actual {actual_replicas}"
+
+        # Verificar que la app sigue funcionando
+        service_name = f"{app_name}-service"
+        with port_forward_context(service_name) as url:
+            response = requests.get(url, timeout=10)
+            assert response.status_code == 200, "App no funciona después de actualización"
+        
+        # Cleanup archivo temporal
+        os.remove('test-values-updated.yaml')

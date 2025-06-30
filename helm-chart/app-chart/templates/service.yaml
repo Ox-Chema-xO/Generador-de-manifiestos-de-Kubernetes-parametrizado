@@ -1,15 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "app-chart.fullname" . }}
+  name: {{ .Values.app_name }}-service
   labels:
-    {{- include "app-chart.labels" . | nindent 4 }}
+    app: {{ .Values.app_name }}
 spec:
-  type: {{ .Values.service.type }}
   ports:
-    - port: {{ .Values.service.port }}
-      targetPort: http
-      protocol: TCP
-      name: http
+  - protocol: {{ .Values.protocol }}
+    port: {{ .Values.service_port }}
+    targetPort: {{ .Values.container_port }}
   selector:
-    {{- include "app-chart.selectorLabels" . | nindent 4 }}
+    app: {{ .Values.app_name }}

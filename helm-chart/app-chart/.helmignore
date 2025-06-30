@@ -21,3 +21,9 @@
 .idea/
 *.tmproj
 .vscode/
+
+.venv
+*.pyc
+__pycache__/
+*.swp
+.DS_Store

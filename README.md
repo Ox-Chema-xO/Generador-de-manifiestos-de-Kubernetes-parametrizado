@@ -43,6 +43,11 @@ Seguimos las politicas de Git Flow lo que nos permitio seguir un flujo de trabaj
       <img src="https://i.postimg.cc/x1qspHYj/image.png" alt="image" width="700" />
    </div>
 
+## Requisitos
+- Python 3.10+
+- [Kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/)
+- [Minikube](https://minikube.sigs.k8s.io/docs/start/?arch=%2Flinux%2Fx86-64%2Fstable%2Fbinary+download)
+
 ## Instalacion del Proyecto
 
 Para instalar o inicializar el proyecto hay que seguir los siguientes pasos
@@ -66,6 +71,12 @@ $ source .venv/bin/activate
 ```bash
 $ chmod +x setup.sh 
 $ ./setup.sh
+```
+
+- Iniciar cluster Kubernetes local
+
+```bash
+$ minikube start
 ```
 
 ## Sprint 1
@@ -185,7 +196,87 @@ Y el historial de commits durante todo el desarrollo del sprint 1 fue el siguien
 
 Durante el desarrollo del Sprint 1 cada desarrollador trabajo cada issue asignada en ramas diferentes en paralelo, al terminar todas las issues y tener todo los cambios en la rama develop, nace otra rama release desde develop en donde se agrega la documentacion correspondiente al sprint 1, asi aplicando correctamente las politicas de Git Flow
 
+## Sprint 2
+
+### Estructura del proyecto
+
+```
+Generador-de-manifiestos-de-Kubernetes-parametrizado/
+│
+├── hooks/
+│   ├── commit-msg
+│   ├── pre-commit
+│   └── pre-push
+│
+├── src/
+│   ├── __init__.py
+│   └── manifest_generator.py
+│
+├── templates/
+│   ├── deployment.yaml.template
+│   ├── service.yaml.template
+│   └── values.yaml
+│
+├── tests/
+│   ├── __init__.py
+│   ├── test_multiples_manifiestos.py
+│   ├── test_validacion.py
+│   └── test_validar_values.py
+│
+├── .gitignore
+├── README.md
+├── requirements.txt
+└── setup.sh
+```
+### Modulos
+
+#### src/
+Se relizaron cambio en **manifest_generator.py** tanto como nuevas implementaciones y tambien refactorizacion de metodos ya existentes:
+- Agregada validacion de esquema JSON para values.yaml usando `jsonschema`
+- Integracion de Jinja2 para procesamiento de templates
+- Implementada funcion `validar_manifiesto_k8s()` con `kubectl dry-run --validate`
+- Modificado para procesar multiples templates
+
+#### tests/
+Se agregaron tests para validar las nuevas implementaciones:
+- Pruebas unitarias para validacion de esquema con casos validos e invalidos
+- Tests para procesamiento de multiples manifiestos
+- Validacion de que los manifiestos generados son sintacticamente correctos
+- Pruebas de manejo de errores en validaciones
+- Test de validacion usando `minikube` y `kubectl`  
+
+### Flujo de Trabajo
+
+En este Sprint delegamos issues parte del sprint 2 a cada integrante
+
+   <div align="center">
+      <img src="https://i.postimg.cc/1tcC99bh/pc41-9.png" alt="image1" width="800" />
+   </div>
+
+Tambien hicimos uso del Kaban Board para el Sprint 2, de igual forma que se hizo para el Sprint 1 tambien se hizo para el Sprint 2 hasta que todas las issues terminaron en la columna Done
+
+   <div align="center">
+      <img src="https://i.postimg.cc/HsPSWvvx/pc41-10.png" alt="image1" width="1100" />
+   </div>
+
+### Historial y ramas
+Durante todo el desarrollo del sprint 2 creamos estas ramas:
+
+   <div align="center">
+      <img src="https://i.postimg.cc/j5Kc3p28/pc41-11.png" alt="image10" width="350" />
+   </div>
+
+Y el historial de commits durante todo el desarrollo del sprint 2 fue el siguiente:
+
+   <div align="center">
+      <img src="https://i.postimg.cc/8kZ4wnSH/pc41-12.png" alt="image11" width="1000" />
+   </div>
+
+Durante el desarrollo del Sprint 2 cada desarrollador trabajo cada issue asignada en ramas diferentes en paralelo, al terminar todas las issues y tener todo los cambios en la rama develop, nace otra rama release/sprint2 desde develop en donde se agrega la documentacion correspondiente al sprint 2, asi aplicando correctamente las politicas de Git Flow
+
 ## Videos
 Se referencia el link de los video de cada cada Sprint hecho:
 
 - **Sprint 1**: [link_video_script1](https://unipe-my.sharepoint.com/:v:/g/personal/guido_chipana_c_uni_pe/Ee90swFctiRJolXvJaV-kG0BqBnW4DzHIRHrsNBbQiJl8Q?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXciLCJyZWZlcnJhbFZpZXciOiJNeUZpbGVzTGlua0NvcHkifX0&e=bLpz5y)
+
+- **Sprint 2**: [link_video_script2](https://unipe-my.sharepoint.com/:v:/g/personal/guido_chipana_c_uni_pe/EVNmnqCV_R9PhcDtPqz3Dp0B9gQepbF2OBd1B3-ASJXUIQ?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXciLCJyZWZlcnJhbFZpZXciOiJNeUZpbGVzTGlua0NvcHkifX0&e=tgAtgA)

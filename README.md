@@ -274,6 +274,108 @@ Y el historial de commits durante todo el desarrollo del sprint 2 fue el siguien
 
 Durante el desarrollo del Sprint 2 cada desarrollador trabajo cada issue asignada en ramas diferentes en paralelo, al terminar todas las issues y tener todo los cambios en la rama develop, nace otra rama release/sprint2 desde develop en donde se agrega la documentacion correspondiente al sprint 2, asi aplicando correctamente las politicas de Git Flow
 
+## Sprint 3
+
+### Estructura del proyecto
+
+```
+Generador-de-manifiestos-de-Kubernetes-parametrizado/
+│
+├── helm-chart/app-chart/ 
+│ 	├── templates/
+│	│ 	├── _helpers.tpl
+│	│ 	├── deployment.yaml
+│	│ 	└── service.yaml
+│ 	├── .helmignore
+│ 	├── Chart.yaml
+│ 	└── values.yaml
+│
+├── hooks/
+│   ├── commit-msg
+│   ├── pre-commit
+│   └── pre-push
+│
+├── src/
+│   ├── __init__.py
+│   └── manifest_generator.py
+│
+├── templates/
+│   ├── deployment.yaml.template
+│   ├── service.yaml.template
+│   └── values.yaml
+│
+├── tests/
+│   ├── __init__.py
+│   ├── test_e2e_local.py
+│   ├── test_multiples_manifiestos.py
+│   ├── test_validacion.py
+│   └── test_validar_values.py
+│
+├── .gitignore
+├── README.md
+├── requirements.txt
+├── comparar.sh
+└── setup.sh
+```
+### Modulos
+
+#### helm-chart/app-chart/
+Se creo un Helm Chart minimo que reproduce la funcionalidad del generador de manifiestos. Sirve como punto de comparacion entre Helm y la generacion propia de YAML.
+
+- `Chart.yaml`: Define los metadatos del chart (nombre, version, etc.)
+    
+- `values.yaml`: Archivo donde se definen los valores por defecto que se inyectaran en las plantillas
+    
+- `.helmignore`: Especifica archivos a ignorar al empaquetar el chart
+    
+- `templates/`: Contiene las plantillas del Deployment y Service
+
+#### src/
+Se agrego nueva funcionalidad en `manifest_generator.py`, con la funcion `desplegar_manifiestos()` se puede desplegar los manifiestos generados usando `kubectl apply`
+
+
+#### tests/ 
+Se agregaron nuevos test para pruebas End-to-End (E2E) para validar el correcto funcionamiento del despliegue
+
+- `test_e2e_local.py`: Prueba E2E que genera los manifiestos, los aplica con `kubectl` y valida:
+    
+    - Que el Pod se encuentre en estado `Running`
+        
+    - Que el Service sea accesible desde el entorno local
+
+### Flujo de Trabajo
+
+En este Sprint delegamos issues parte del sprint 3 a cada integrante
+
+   <div align="center">
+      <img src="https://i.postimg.cc/pdbywPBQ/pc41-13.png" alt="image1" width="800" />
+   </div>
+
+Tambien hicimos uso del Kaban Board para el Sprint 3, de igual forma que se hizo para el Sprint 1 y Sprint 2 tambien se hizo para el Sprint 3 hasta que todas las issues terminaron en la columna Done
+
+   <div align="center">
+      <img src="https://i.postimg.cc/pdCxsvcL/pc41-14.png" alt="image1" width="1100" />
+   </div>
+
+   <div align="center">
+      <img src="https://i.postimg.cc/gjCPx2jN/pc41-15.png" alt="image1" width="1100" />
+   </div>
+
+### Historial y ramas
+Durante todo el desarrollo del sprint 3 creamos estas ramas:
+
+   <div align="center">
+      <img src="https://i.postimg.cc/HsMgfXvK/pc41-16.png" alt="image10" width="290" />
+   </div>
+
+Y el historial de commits durante todo el desarrollo del sprint 3 fue el siguiente:
+
+   <div align="center">
+      <img src="https://i.postimg.cc/bYTCdJDJ/pc41-17.png" alt="image11" width="1000" />
+   </div>
+
+Durante el desarrollo del Sprint 3 de igual forma para el Sprint 1 y 2, cada desarrollador trabajo cada issue asignada en ramas diferentes en paralelo, al terminar todas las issues y tener todo los cambios en la rama develop, nace otra rama release/sprint3 desde develop en donde se agrega la documentacion correspondiente al sprint 3, asi aplicando correctamente las politicas de Git Flow
+
 ## Videos
 Se referencia el link de los video de cada cada Sprint hecho:
 

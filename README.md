@@ -47,6 +47,7 @@ Seguimos las politicas de Git Flow lo que nos permitio seguir un flujo de trabaj
 - Python 3.10+
 - [Kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/)
 - [Minikube](https://minikube.sigs.k8s.io/docs/start/?arch=%2Flinux%2Fx86-64%2Fstable%2Fbinary+download)
+- [Helm](https://helm.sh/es/docs/intro/install/)
 
 ## Instalacion del Proyecto
 
@@ -382,3 +383,5 @@ Se referencia el link de los video de cada cada Sprint hecho:
 - **Sprint 1**: [link_video_script1](https://unipe-my.sharepoint.com/:v:/g/personal/guido_chipana_c_uni_pe/Ee90swFctiRJolXvJaV-kG0BqBnW4DzHIRHrsNBbQiJl8Q?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXciLCJyZWZlcnJhbFZpZXciOiJNeUZpbGVzTGlua0NvcHkifX0&e=bLpz5y)
 
 - **Sprint 2**: [link_video_script2](https://unipe-my.sharepoint.com/:v:/g/personal/guido_chipana_c_uni_pe/EVNmnqCV_R9PhcDtPqz3Dp0B9gQepbF2OBd1B3-ASJXUIQ?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXciLCJyZWZlcnJhbFZpZXciOiJNeUZpbGVzTGlua0NvcHkifX0&e=tgAtgA)
+
+- **Sprint 3**: [link_video_script3](https://unipe-my.sharepoint.com/:v:/g/personal/guido_chipana_c_uni_pe/EYNPrvjfrNhDnWYWkp5ENhkBmEG15aYuc6yJs3dyaG6mbw?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXciLCJyZWZlcnJhbFZpZXciOiJNeUZpbGVzTGlua0NvcHkifX0&e=DEsLda)

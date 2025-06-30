@@ -43,6 +43,11 @@ Seguimos las politicas de Git Flow lo que nos permitio seguir un flujo de trabaj
       <img src="https://i.postimg.cc/x1qspHYj/image.png" alt="image" width="700" />
    </div>
 
+## Requisitos
+- Python 3.10+
+- [Kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/)
+- [Minikube](https://minikube.sigs.k8s.io/docs/start/?arch=%2Flinux%2Fx86-64%2Fstable%2Fbinary+download)
+
 ## Instalacion del Proyecto
 
 Para instalar o inicializar el proyecto hay que seguir los siguientes pasos
@@ -66,6 +71,12 @@ $ source .venv/bin/activate
 ```bash
 $ chmod +x setup.sh 
 $ ./setup.sh
+```
+
+- Iniciar cluster Kubernetes local
+
+```bash
+$ minikube start
 ```
 
 ## Sprint 1

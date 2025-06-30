@@ -137,6 +137,35 @@ def validar_manifiesto_k8s(contenido_manifiesto, nombre_archivo=""):
         return False
 
 
+def desplegar_manifiestos(directorio_output):
+    """
+    Despliega manifiestos generados usando kubectl apply
+    """
+    try:
+        print(f"\nDesplegando manifiestos desde: {directorio_output}")
+        # Ejecutar kubectl apply en el directorio
+        resultado = subprocess.run([
+            'kubectl', 'apply', '-f', directorio_output
+        ], capture_output=True, text=True)
+
+        if resultado.returncode == 0:
+            print("Despliegue exitoso!")
+            print(resultado.stdout)
+            # Mostrar pods desplegados
+            print("\nRecursos desplegados:")
+            subprocess.run(['kubectl', 'get', 'pods,svc'],
+                           capture_output=False)
+            return True
+        else:
+            print("Error en despliegue:")
+            print(resultado.stderr)
+            return False
+
+    except Exception as e:
+        print(f"Error: {e}")
+        return False
+
+
 def main():
     parser = argparse.ArgumentParser(
         description="Generador de manifiestos de kubernetes"
@@ -155,6 +184,11 @@ def main():
     parser.add_argument(
         '--output', '-o',
         help='Ruta del archivo de output (opcional)'
+    )
+    parser.add_argument(
+        '--deploy', '-d',
+        action='store_true',
+        help='Desplegar manifiestos despues de generarlos'
     )
     args = parser.parse_args()
 
@@ -190,6 +224,16 @@ def main():
             ruta_output = os.path.join(args.output, nombre_archivo)
             guardar_manifiesto(manifiesto, ruta_output)
         print(f"{'='*50}")
+    if args.deploy and args.output:
+        print(f"\n{'='*50}")
+        if desplegar_manifiestos(args.output):
+            print("Generacion y despliegue completados")
+        else:
+            print("Fallo el despliegue")
+            return 1
+    elif args.deploy and not args.output:
+        print("Error: Para desplegar necesitas especificar --output")
+        return 1
     return 0
 
 

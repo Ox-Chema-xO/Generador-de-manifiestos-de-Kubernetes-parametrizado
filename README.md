@@ -385,3 +385,5 @@ Se referencia el link de los video de cada cada Sprint hecho:
 - **Sprint 2**: [link_video_script2](https://unipe-my.sharepoint.com/:v:/g/personal/guido_chipana_c_uni_pe/EVNmnqCV_R9PhcDtPqz3Dp0B9gQepbF2OBd1B3-ASJXUIQ?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXciLCJyZWZlcnJhbFZpZXciOiJNeUZpbGVzTGlua0NvcHkifX0&e=tgAtgA)
 
 - **Sprint 3**: [link_video_script3](https://unipe-my.sharepoint.com/:v:/g/personal/guido_chipana_c_uni_pe/EYNPrvjfrNhDnWYWkp5ENhkBmEG15aYuc6yJs3dyaG6mbw?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXciLCJyZWZlcnJhbFZpZXciOiJNeUZpbGVzTGlua0NvcHkifX0&e=DEsLda)
+
+- **Video final**: [link_video_final](https://unipe-my.sharepoint.com/:v:/g/personal/guido_chipana_c_uni_pe/EW5e-fY4dW5OhKPJELwZoUkBk9AMLTpl17kLS0igXY6C_Q?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXciLCJyZWZlcnJhbFZpZXciOiJNeUZpbGVzTGlua0NvcHkifX0&e=pTZG4S)

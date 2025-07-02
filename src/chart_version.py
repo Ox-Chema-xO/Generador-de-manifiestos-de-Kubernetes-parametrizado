@@ -35,6 +35,31 @@ def save_all_templates(version):
     if not saved:
         print("No se encontro ningun .template o .yaml en templates/")
 
+
+def load_all_templates(version):
+    """
+    Restaura todos los templates y values desde una version
+    """
+    version_dir = os.path.join(VERSIONS_DIR, version)
+    if not os.path.exists(version_dir):
+        print(f"Version {version} no existe")
+        return
+
+    restored = False
+    for filename in os.listdir(version_dir):
+        src_path = os.path.join(version_dir, filename)
+        dest_path = os.path.join(TEMPLATE_DIR, filename)
+
+        with open(src_path, 'rb') as src, open(dest_path, 'wb') as dst:
+            dst.write(src.read())
+
+        restored = True
+        print(f"Restaurado: {filename} desde version {version}")
+
+    if not restored:
+        print(f"No hay archivos en la version {version}")
+
+
 def _update_index(filename, version):
     """
     Actualiza indice de versiones por archivo
@@ -54,16 +79,19 @@ def _update_index(filename, version):
     with open(INDEX_FILE, 'w') as f:
         json.dump(index, f, indent=2)
 
+
 if __name__ == "__main__":
     """
     Uso:
-       python3 src/chart_versions.py save-all <version>
+       python3 chart_versions.py save-all <version>
+       python3 chart_versions.py load-all <version>
     """
 
     command = sys.argv[1]
 
     if command == "save-all" and len(sys.argv) == 3:
         save_all_templates(sys.argv[2])
+    elif command == "load-all" and len(sys.argv) == 3:
+        load_all_templates(sys.argv[2])
     else:
         print("Comando invalido")
-

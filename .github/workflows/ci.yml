@@ -38,7 +38,7 @@ jobs:
       run: |
         flake8 src/ tests/
 
-  test:
+  unit-test:
     runs-on: ubuntu-latest
     name: Test con Minikube
     needs: lint
@@ -75,3 +75,33 @@ jobs:
     - name: Validate generated manifests
       run: |
         kubectl apply --dry-run=client -f test-ci-output/
+
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy to Minikube
+    needs: unit-test
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+        
+    - name: Start minikube
+      uses: medyagh/setup-minikube@master
+      with:
+        minikube-version: 'latest'
+        kubernetes-version: 'v1.33.2'
+        
+    - name: Install dependencies
+      run: pip install -r requirements.txt
+        
+    - name: Generate and deploy manifests
+      run: |
+        python src/manifest_generator.py \
+          -t templates/deployment.yaml.template templates/service.yaml.template \
+          -v templates/values.yaml \
+          -o deploy-output \
+          --deploy

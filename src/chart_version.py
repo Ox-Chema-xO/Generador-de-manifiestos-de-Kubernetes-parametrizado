@@ -80,11 +80,28 @@ def _update_index(filename, version):
         json.dump(index, f, indent=2)
 
 
+def list_template_versions():
+    """
+    Lista todas las versiones guardadas
+    """
+    if not os.path.exists(INDEX_FILE):
+        print("No hay versiones guardadas")
+        return
+
+    with open(INDEX_FILE, 'r') as f:
+        index = json.load(f)
+
+    print("Versiones disponibles:")
+    for filename, versions in index.items():
+        print(f"  {filename}: {', '.join(sorted(versions))}")
+
+
 if __name__ == "__main__":
     """
     Uso:
-       python3 chart_versions.py save-all <version>
-       python3 chart_versions.py load-all <version>
+       python3 src/chart_versions.py save-all <version>
+       python3 src/chart_versions.py load-all <version>
+       python3 src/chart_versions.py list
     """
 
     command = sys.argv[1]
@@ -93,5 +110,7 @@ if __name__ == "__main__":
         save_all_templates(sys.argv[2])
     elif command == "load-all" and len(sys.argv) == 3:
         load_all_templates(sys.argv[2])
+    elif command == "list":
+        list_template_versions()
     else:
         print("Comando invalido")

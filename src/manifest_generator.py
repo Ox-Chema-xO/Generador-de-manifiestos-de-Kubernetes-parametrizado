@@ -260,8 +260,31 @@ def main():
         action='store_true',
         help='Desplegar manifiestos despues de generarlos'
     )
+    parser.add_argument(
+        '--history','-h',
+        metavar='APP_NAME',
+        help='Mostrar historial de deployment'
+    )
+    parser.add_argument(
+        '--rollback',
+        metavar='APP_NAME',
+        help='Hacer rollback del deployment especificado'
+    )
+    parser.add_argument(
+        '--rollback-revision',
+        metavar='REVISION',
+        type=int,
+        help='Revision especifica para rollback'
+    )
+
     args = parser.parse_args()
 
+    if args.rollback:
+        return 0 if rollback_deployment(args.rollback, args.rollback_revision) else 1
+    
+    if args.history:
+        return 0 if mostrar_historial_deployment(args.history) else 1
+    
     values = cargar_values(args.values)
     if not values:
         return 1

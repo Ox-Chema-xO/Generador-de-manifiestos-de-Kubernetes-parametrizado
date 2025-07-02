@@ -166,6 +166,30 @@ def desplegar_manifiestos(directorio_output):
         return False
 
 
+def mostrar_historial_deployment(app_name):
+    """
+    Muestra el historial de revisiones de un deployment
+    """
+    try:
+        deployment_name = f"{app_name}-deployment"
+        print(f"\nHistorial de {deployment_name}:")
+        resultado = subprocess.run([
+            'kubectl', 'rollout', 'history', 
+            f'deployment/{deployment_name}'
+        ], capture_output=True, text=True)
+        
+        if resultado.returncode == 0:
+            print(resultado.stdout)
+            return True
+        else:
+            print("Error al intentar obtener historial:")
+            print(resultado.stderr)
+            return False
+    except Exception as e:
+        print(f"Error: {e}")
+        return False
+
+
 def main():
     parser = argparse.ArgumentParser(
         description="Generador de manifiestos de kubernetes"

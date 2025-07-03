@@ -10,6 +10,7 @@ TEMPLATE_DIR = "templates"
 VERSIONS_DIR = "templates_versions"
 INDEX_FILE = os.path.join(VERSIONS_DIR, "index.json")
 
+
 def save_all_templates(version):
     """
     Guardar todo los templatees y values en version especifica
@@ -29,9 +30,9 @@ def save_all_templates(version):
             update_index(filename, version)
             saved = True
             print(f"Guardado: {filename} en version {version}")
-    
+
     if not saved:
-        print(f"No se encontro ningun archivo .template ni .yaml en templates/")            
+        print("No se encontro ningun archivo .template y .yaml en templates/")
 
 
 def load_all_templates(version):
@@ -73,6 +74,7 @@ def list_template_versions():
     for filename, versions in index.items():
         print(f"  {filename}: {', '.join(sorted(versions))}")
 
+
 def update_index(filename, version):
     """
     Actualizar los index de versiones en el index.json
@@ -85,10 +87,10 @@ def update_index(filename, version):
 
     if filename not in index:
         index[filename] = []
-    
+
     if version not in index[filename]:
         index[filename].append(version)
-    
+
     with open(INDEX_FILE, 'w') as f:
         json.dump(index, f, indent=2)
 
@@ -102,7 +104,7 @@ if __name__ == "__main__":
     """
 
     command = sys.argv[1]
-    
+
     if command == "save-all" and len(sys.argv) == 3:
         save_all_templates(sys.argv[2])
     elif command == "load-all" and len(sys.argv) == 3:

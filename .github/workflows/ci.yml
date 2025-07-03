@@ -105,3 +105,29 @@ jobs:
           -v templates/values.yaml \
           -o deploy-output \
           --deploy
+
+  e2e-test:
+    runs-on: ubuntu-latest
+    name: E2E Tests
+    needs: deploy
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+        
+    - name: Start minikube
+      uses: medyagh/setup-minikube@master
+      with:
+        minikube-version: 'latest'
+        kubernetes-version: 'v1.33.2'
+    
+    - name: Install dependencies
+      run: pip install -r requirements.txt
+
+    - name: Run E2E test
+      run: |
+        pytest tests/test_e2e_local

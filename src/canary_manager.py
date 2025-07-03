@@ -90,6 +90,25 @@ def limpiar_canary(app_name):
         return False
 
 
+def ver_estado(app_name):
+    """
+    Muestra estado de version STABLE y CANARY
+    """
+    print(f"Estado de {app_name}")
+    print()
+    print("STABLE")
+    subprocess.run(
+        ["kubectl", "get", "deployment", f"{app_name}-deployment"],
+        capture_output=False
+    )
+    print()
+    print("CANARY")
+    subprocess.run(
+        ["kubectl", "get", "deployment", f"{app_name}-canary"],
+        capture_output=False
+    )
+
+
 def main():
     parser = argparse.ArgumentParser(
         description="Gestor de canary releases"
@@ -115,6 +134,11 @@ def main():
         action='store_true',
         help='Eliminar el canary release de la app'
     )
+    parser.add_argument(
+        '--status',
+        action='store_true',
+        help='Ver estado de canary y stable'
+    )
     args = parser.parse_args()
     if args.deploy:
         if not desplegar_canary(args.app, args.deploy):
@@ -128,6 +152,10 @@ def main():
         if not limpiar_canary(args.app):
             return 1
         return 0
+    if args.status:
+        ver_estado(args.app)
+        return 0
+    return 1
 
 
 if __name__ == "__main__":

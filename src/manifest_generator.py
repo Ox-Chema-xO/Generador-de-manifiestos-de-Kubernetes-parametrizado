@@ -191,7 +191,6 @@ def main():
         help='Desplegar manifiestos despues de generarlos'
     )
     args = parser.parse_args()
-
     values = cargar_values(args.values)
     if not values:
         return 1

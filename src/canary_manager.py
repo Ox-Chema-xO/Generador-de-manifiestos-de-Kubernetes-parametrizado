@@ -69,6 +69,27 @@ def promover_canary(app_name, nueva_imagen):
         return False
 
 
+def limpiar_canary(app_name):
+    """
+    Se limipia canary
+    """
+    print("Eliminando canary")
+    try:
+        subprocess.run(
+            ["kubectl", "delete", "deployment", f"{app_name}-canary"],
+            capture_output=True
+        )
+        subprocess.run(
+            ["kubectl", "delete", "service", f"{app_name}-canary-service"],
+            capture_output=True
+        )
+        print("Canary eliminado")
+        return True
+    except Exception as e:
+        print(f"Error: {e}")
+        return False
+
+
 def main():
     parser = argparse.ArgumentParser(
         description="Gestor de canary releases"
@@ -89,6 +110,11 @@ def main():
         metavar='IMAGEN',
         help='Promover el canary a produccion con la imagen especificada'
     )
+    parser.add_argument(
+        '--clean',
+        action='store_true',
+        help='Eliminar el canary release de la app'
+    )
     args = parser.parse_args()
     if args.deploy:
         if not desplegar_canary(args.app, args.deploy):
@@ -96,6 +122,10 @@ def main():
         return 0
     if args.promote:
         if not promover_canary(args.app, args.promote):
+            return 1
+        return 0
+    if args.clean:
+        if not limpiar_canary(args.app):
             return 1
         return 0
 

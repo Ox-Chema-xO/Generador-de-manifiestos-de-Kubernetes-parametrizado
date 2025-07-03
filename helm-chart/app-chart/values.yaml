@@ -1,3 +1,4 @@
+---
 app_name: "my-app"
 protocol: "TCP"
 image: "nginx:latest"

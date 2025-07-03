@@ -1,0 +1,133 @@
+name: CI/CD Manifest Templates
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths:
+      - 'templates/**'
+      - 'src/**'
+      - 'tests/**'
+  pull_request:
+    branches: [ main, develop ]
+
+env:
+  PYTHON_VERSION: '3.12'
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    name: Lint Templates y Código
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+        
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+        
+    - name: Lint YAML templates
+      run: |
+        yamllint templates/ helm-chart/app-chart/values.yaml
+        
+    - name: Lint Python code
+      run: |
+        flake8 src/ tests/
+
+  unit-test:
+    runs-on: ubuntu-latest
+    name: Test con Minikube
+    needs: lint
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+        
+    - name: Start minikube
+      uses: medyagh/setup-minikube@master
+      with:
+        minikube-version: 'latest'
+        kubernetes-version: 'v1.33.2'
+        
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+        
+    - name: Run unit tests
+      run: |
+        python -m pytest tests/test_validacion.py tests/test_validar_values.py -v
+        
+    - name: Test template generation
+      run: |
+        python src/manifest_generator.py \
+          -t templates/deployment.yaml.template templates/service.yaml.template \
+          -v templates/values.yaml \
+          -o test-ci-output
+        
+    - name: Validate generated manifests
+      run: |
+        kubectl apply --dry-run=client -f test-ci-output/
+
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy to Minikube
+    needs: unit-test
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+        
+    - name: Start minikube
+      uses: medyagh/setup-minikube@master
+      with:
+        minikube-version: 'latest'
+        kubernetes-version: 'v1.33.2'
+        
+    - name: Install dependencies
+      run: pip install -r requirements.txt
+        
+    - name: Generate and deploy manifests
+      run: |
+        python src/manifest_generator.py \
+          -t templates/deployment.yaml.template templates/service.yaml.template \
+          -v templates/values.yaml \
+          -o deploy-output \
+          --deploy
+
+  e2e-test:
+    runs-on: ubuntu-latest
+    name: E2E Tests
+    needs: deploy
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+        
+    - name: Start minikube
+      uses: medyagh/setup-minikube@master
+      with:
+        minikube-version: 'latest'
+        kubernetes-version: 'v1.33.2'
+    
+    - name: Install dependencies
+      run: pip install -r requirements.txt
+
+    - name: Run E2E test
+      run: |
+        pytest tests/test_e2e_local.py

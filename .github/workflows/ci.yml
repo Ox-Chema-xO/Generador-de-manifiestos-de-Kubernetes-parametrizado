@@ -130,4 +130,4 @@ jobs:
 
     - name: Run E2E test
       run: |
-        pytest tests/test_e2e_local
+        pytest tests/test_e2e_local.py
